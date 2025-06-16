@@ -1,44 +1,36 @@
-def read_numbers_from_file(file_path):
-    numbers = []
+def compute_stats(file):
+    total = 0
+    sum_values = 0
+    min_value = None
+    max_value = None
     try:
-        with open(file_path, 'r') as file:
-            for line in file:
-                try:
-                    number = float(line.strip())  # Change to int() if only integers are expected
-                    numbers.append(number)
-                except ValueError:
-                    print(f"Skipping invalid value: {line.strip()}")
+        with open(file, "r") as f:
+            first_line = f.readline().strip()
+            if first_line:  # ensure file is not empty
+                min_value = max_value = int(first_line)
+                sum_values += min_value
+                total += 1
+            for line in f:
+                num = int(line.strip())
+                total += 1
+                sum_values += num
+                if num < min_value:
+                    min_value = num
+                if num > max_value:
+                    max_value = num
+        if total > 0:
+            average = round(sum_values / total)
+        else:
+            average = 0
+        print(f"total = {total}")
+        print(f"summation = {sum_values}")
+        print(f"average = {average}")
+        print(f"Minimum = {min_value}")
+        print(f"Maximum = {max_value}")
     except FileNotFoundError:
-        print("File not found. Please check the file path.")
-    return numbers
-
-def calculate_stats(numbers):
-    if not numbers:
-        return {"total": 0, "sum": 0, "average": 0, "min": None, "max": None}
-
-    total = len(numbers)
-    sum_values = sum(numbers)
-    average = round(sum_values / total)
-    min_value = min(numbers)
-    max_value = max(numbers)
-
-    return {
-        "total": total,
-        "sum": sum_values,
-        "average": average,
-        "min": min_value,
-        "max": max_value,
-    }
-
-def print_stats(stats):
-    print(f"Total Numbers: {stats['total']}")
-    print(f"Summation: {stats['sum']}")
-    print(f"Average: {stats['average']}")
-    print(f"Minimum: {stats['min']}")
-    print(f"Maximum: {stats['max']}")
+        print("Error: File not found.")
+    except ValueError:
+        print("Error: Invalid data in file.")
 
 if __name__ == "__main__":
-    file_path = "random_nums.txt"  # Ensure this file exists in your working directory
-    numbers = read_numbers_from_file(file_path)
-    stats = calculate_stats(numbers)
-    print_stats(stats)
+    compute_stats("random_nums.txt")

@@ -1,16 +1,31 @@
-# This is a sample Python script.
+def compute_stats(file):
+    try:
+        with open(file, "r") as f:
+            numbers = [int(line.strip()) for line in f if line.strip().isdigit()]
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+        if numbers:
+            total = len(numbers)
+            sum_values = sum(numbers)
+            average = round(sum_values / total)
+            min_value = min(numbers)
+            max_value = max(numbers)
 
+            print(f"total = {total}")
+            print(f"summation = {sum_values}")
+            print(f"average = {average}")
+            print(f"Minimum = {min_value}")
+            print(f"Maximum = {max_value}")
+        else:
+            print("total = 0")
+            print("summation = 0")
+            print("average = 0")
+            print("Minimum = None")
+            print("Maximum = None")
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+    except FileNotFoundError:
+        print("Error: File not found.")
+    except ValueError:
+        print("Error: Invalid data in file.")
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+if __name__ == "__main__":
+    compute_stats("random_nums.txt")
